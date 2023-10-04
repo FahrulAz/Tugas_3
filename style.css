@@ -17,7 +17,6 @@ body {
     font-weight: bold;
     font-size: 2rem;
     color: #019b01;
-    margin-top: 2rem;
     margin-bottom: -0.5rem;
 }
 
@@ -29,7 +28,7 @@ body {
     font-family: 'Poppins', sans-serif;
     text-align: center;
     width: 10rem;
-    min-height: 180px;
+    min-height: 175px;
     padding: 25px 0 0;
     margin: 0 auto;
     position: relative;
@@ -51,7 +50,7 @@ body {
 }
 .counter .counter-value{
     background:#fe8c00;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     font-weight: 600;
     letter-spacing: 2px;
     width: 100%;
@@ -66,8 +65,8 @@ body {
 .counter .counter-icon{
     background: linear-gradient(to right,#fe8c00,#f83600);
     line-height: 60px;
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     margin: 0 auto 20px;
     border-radius: 50%;
     border: 2px solid #fff;
@@ -75,17 +74,14 @@ body {
 }
 .counter h3{
     color: #f83600;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     font-weight: 500;
     text-transform: capitalize;
-    line-height: 15px;
+    line-height: 12px;
     padding: 0 30px;
     margin: 0 0 15px;
 }
 
-.rasio{
-    border-radius: 50%;
-}
 .counter.green .counter-value{ background: #01c700; }
 .counter.green .counter-icon{ background: linear-gradient(to right,#01c700,#019b01); }
 .counter.green h3{ color: #019b01; }

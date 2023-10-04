@@ -7,38 +7,97 @@ const options = {
 	}
 };
 
+// // menggunakan promise js===========================================
+// // init search button di html
+// const searchButton = document.querySelector('#button-data');
+// searchButton.addEventListener('click', function() {
+//     //untuk mengambil value dari input user
+//     let inputData = document.querySelector('#input-data');
+//     fetch(url + inputData.value, options)
+// 	  .then( response => response.json() )
+// 	  .then( getData => {
 
-// init search button di html
+// 	// 	//declar var baru //country mengambil dari key yang ada di api
+// 		let dataCov = getData.response;
+// 		let cards = '';
+// 		dataCov.map(m => cards += showCards(m));
+// 		//tampilkan di inner html
+// 		const cardContent = document.querySelector('.card-content');
+// 		cardContent.innerHTML = cards; 
+// 		// setalah value dikirim maka akan hilang
+// 		inputData.value = '';
+// 	  });
+// });
+
+
+
+//menggunakan async await
 const searchButton = document.querySelector('#button-data');
-searchButton.addEventListener('click', function() {
-    //untuk mengambil value dari input user
-    let inputData = document.querySelector('#input-data');
-    fetch(url + inputData.value, options)
-	  .then( response => response.json() )
-	  .then( getData => {
-
-	// 	//declar var baru //country mengambil dari key yang ada di api
-		let dataCov = getData.response;
-		let cards = '';
-		dataCov.map(m => cards += showCards(m));
-		//tampilkan di inner html
-		const cardContent = document.querySelector('.card-content');
-		cardContent.innerHTML = cards; 
-		// setalah value dikirim maka akan hilang
-		inputData.value = '';
-	  });
+searchButton.addEventListener('click', async function() {
+  try {
+    const inputData = document.querySelector('#input-data');
+    const dataCov = await getDataCov(inputData.value);
+    updateUI(dataCov);
+  } catch (err) {
+    let cardErr = `<div class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+    <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#007aff"></rect></svg>
+    <strong class="me-auto">Error</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" fdprocessedid="ithoh"></button>
+    </div>
+    <div class="toast-body">
+    error: ${err}
+    </div>
+    </div>`
+    const contentErr = document.querySelector('.card-content');
+    contentErr.innerHTML = cardErr;
+  }
 });
+
+
+
+function getDataCov(valueSearch) {
+  return fetch(url + valueSearch, options)
+  .then(response => {
+    if (response.ok === false) {
+      throw new Error (response.statusText);
+    }
+    return response.json();
+  })
+  .then(response => {
+    // console.log(response);
+    if(response.results == 0) {
+      if (valueSearch == "") { let e = 'input tidak boleh kosong';
+      throw new Error (e)
+      
+    }
+      e = 'Keyword salah';
+      throw new Error (e)
+    }
+    return response.response;
+  })
+}
+
+
+function updateUI(dataCov) {
+  let cards = '';
+  dataCov.map(m => cards += showCards(m));
+  const cardContent = document.querySelector('.card-content');
+  cardContent.innerHTML = cards; 
+  // setalah value dikirim maka akan hilang
+}
+
+
 
 
 function separatorNumber(data) {
 	if ( data === null ) {
 		//merubah nilai null dari api menjadi string
-		return('tidak ada')
+		return('Nothing Cases')
 	} else {
 		//menambahkan separator titik pada angka
 		return data.toLocaleString("de-DE");
 	}
-
 }
 
 
@@ -50,7 +109,7 @@ function showCards(m) {
                 <div class="counter blue">
                   <div class="counter-content">
                     <div class="counter-icon">
-                        <img class="img-fluid mb-2" src="img/activCases.jpg" width="50">
+                        <img class="img-fluid mb-3" src="img/activCases.jpg" width="50">
                     </div><h3>Active Cases</h3></div>
                   <span class="counter-value"><strong>${ separatorNumber(m.cases.active) }</strong></span>
                 </div>
@@ -60,7 +119,7 @@ function showCards(m) {
                 <div class="counter green">
                   <div class="counter-content">
                     <div class="counter-icon">
-                        <img class="img-fluid mb-2" src="img/newCases.JPG" width="40">
+                        <img class="img-fluid mb-3" src="img/newCases.JPG" width="40">
                     </div><h3>New Cases</h3></div>
                   <span class="counter-value"><strong>${separatorNumber(m.cases.new)}</strong></span>
                 </div>
@@ -70,7 +129,7 @@ function showCards(m) {
                 <div class="counter">
                   <div class="counter-content">
                     <div class="counter-icon">
-                        <img class="img-fluid mb-2" src="img/recovery.png" width="40">
+                        <img class="img-fluid mb-3" src="img/recovery.png" width="40">
                     </div><h3>Recovered Cases</h3></div>
                   <span class="counter-value"><strong>${ separatorNumber(m.cases.recovered) }</strong></span>
                 </div>
@@ -80,7 +139,7 @@ function showCards(m) {
                 <div class="counter blue">
                   <div class="counter-content">
                     <div class="counter-icon">
-                        <img class="img-fluid mb-2" src="img/totalcases.png" width="50">
+                        <img class="img-fluid mb-3" src="img/totalcases.png" width="50">
                     </div><h3>Total Cases</h3></div>
                   <span class="counter-value"><strong>${ separatorNumber(m.cases.total) }</strong></span>
                 </div>
@@ -90,7 +149,7 @@ function showCards(m) {
                 <div class="counter green">
                   <div class="counter-content">
                     <div class="counter-icon">
-                        <img class="img-fluid mb-2" src="img/rip.jpg" width="40">
+                        <img class="img-fluid mb-3" src="img/rip.jpg" width="40">
                     </div><h3>Total Deaths</h3></div>
                   <span class="counter-value"><strong>${separatorNumber(m.deaths.total)}</strong></span>
                 </div>
@@ -100,11 +159,10 @@ function showCards(m) {
                 <div class="counter">
                   <div class="counter-content">
                     <div class="counter-icon">
-                        <img class="img-fluid mb-2" src="img/totaltest.png" width="40">
+                        <img class="img-fluid mb-3" src="img/totaltest.png" width="40">
                     </div><h3>Total Tests</h3></div>
                   <span class="counter-value"><strong>${ separatorNumber(m.tests.total) }</strong></span>
                 </div>
               </div>
 					`
 }
-
