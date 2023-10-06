@@ -12,6 +12,7 @@ body {
     box-shadow: 5px 0 40px rgba(6, 204, 253, 0.8);
 }
 
+
 .result-search {
     font-family: 'Marck Script', cursive;
     font-weight: bold;
@@ -21,8 +22,7 @@ body {
 }
 
 
-
-/* tambahan */
+/* tambahan card design*/
 .counter{
     color: #fff;
     font-family: 'Poppins', sans-serif;
@@ -80,6 +80,15 @@ body {
     line-height: 12px;
     padding: 0 30px;
     margin: 0 0 15px;
+}
+
+.alertCard {
+    width: 38rem;
+    margin-left: 2rem;
+    font-weight: bold;
+    background-color: #f83600;
+    border-color: #ffaa00;
+    /* padding: 0.5rem; */
 }
 
 .counter.green .counter-value{ background: #01c700; }

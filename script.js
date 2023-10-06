@@ -34,25 +34,22 @@ const options = {
 //menggunakan async await
 const searchButton = document.querySelector('#button-data');
 searchButton.addEventListener('click', async function() {
+  const inputData = document.querySelector('#input-data');
   try {
-    const inputData = document.querySelector('#input-data');
     const dataCov = await getDataCov(inputData.value);
     updateUI(dataCov);
   } catch (err) {
-    let cardErr = `<div class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header">
-    <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#007aff"></rect></svg>
-    <strong class="me-auto">Error</strong>
-    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" fdprocessedid="ithoh"></button>
-    </div>
-    <div class="toast-body">
-    error: ${err}
-    </div>
-    </div>`
     const contentErr = document.querySelector('.card-content');
-    contentErr.innerHTML = cardErr;
+    contentErr.innerHTML = cardErr(err);
+    //set tampil error hanya 2 detik
+    setTimeout(() => {
+      $('.alertCard').hide();
+    }, 3000);
   }
+  //clear value event clik button
+  inputData.value = "";
 });
+
 
 
 
@@ -69,7 +66,6 @@ function getDataCov(valueSearch) {
     if(response.results == 0) {
       if (valueSearch == "") { let e = 'input tidak boleh kosong';
       throw new Error (e)
-      
     }
       e = 'Keyword salah';
       throw new Error (e)
@@ -165,4 +161,10 @@ function showCards(m) {
                 </div>
               </div>
 					`
+}
+
+function cardErr(e) {
+  return `  <div class="alertCard alert alert-danger alert-dismissible fade show">
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  ${e} </div>`
 }
